@@ -38,7 +38,18 @@ jobs:
           name: "run npm test"
           command: npm run test
 
-           
+  analyze:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - "npm-packages"
+      - run:
+          name: "run npm audit"
+          command: npm audit
+       
 
 # Invoke jobs via workflows
 workflows:
@@ -47,4 +58,7 @@ workflows:
       - build
       - test:
           requires:
-            - build   
+            - build 
+      - analyze:
+          requires:
+           - test        
