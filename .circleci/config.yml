@@ -22,10 +22,26 @@ jobs:
       - run:
           name: "run npm lint"
           command: npm run lint
+
+  test:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - "npm-packages"
+      - run:
+          name: "run npm test"
+          command: npm run test
+
            
 
 # Invoke jobs via workflows
 workflows:
   npm_test_workflow:
     jobs:
-      - build   
+      - build
+      - test:
+        requires:
+          - build   
