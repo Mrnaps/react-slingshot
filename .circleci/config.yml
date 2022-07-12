@@ -1,0 +1,31 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+version: 2.1
+
+# Define a command to be invoked later in the workflow.
+# commands:
+  
+
+# Define a job to be invoked later in a workflow.
+jobs: 
+  build:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - run: 
+          name: "run install npm"
+          command: npm i
+      - save_cache:
+          key: "npm-packages"
+          paths:
+            - /src/node_modules
+      - run:
+          name: "run npm lint"
+          command: npm run lint
+           
+
+# Invoke jobs via workflows
+workflows:
+  npm_test_workflow:
+    jobs:
+      - build   
